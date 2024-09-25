@@ -1,0 +1,37 @@
+import pandas as pd
+import os
+
+def convert_96dwp_data_to_DF(plate_layout, mu_data, media_type):
+    """ 
+    Combines MPHP data with plate layout or media information into a DataFrame. Ensure your files are in excel format. 
+    
+    Parameters:
+    plate_layout (str): Excel file containing plate layout in 96dwp format.
+    mu_data (str): Excel file containing mu data at different timepoints in 96dwp format.
+    media_type (str): Excel file containing media conditions specified per well in 96dwp format.
+    
+    Example usage: 
+    mu_data = pd.read_excel([path to MPHP data excel file])
+    plate_layout = pd.read_excel([path to plate layout excel file])
+    media_type = pd.read_excel([path to media type excel file])
+    
+    All files should be in the A-H, 1-12 96dwp format that is typically exported from MPHP dashboard
+    """
+    # Convert information into DataFrame table 
+    table1=pd.DataFrame({'L#': layout.values.ravel(), 'mu':mu_data.values.ravel(), 'media': media_type.values.ravel()})
+    print(table1)
+    
+    # Drop any N/A values within table, such as from empty wells
+    table2 = table1.dropna(axis=0)
+    table2.loc[:, 'mu'] = pd.to_numeric(table2['mu'], errors='coerce')
+    table2 = table2.dropna(subset=['mu'])print(table2)
+    print(table2)
+
+    # Group values by L#s and/or media type to calculate averages and standard deviations
+
+    table3 = table2.groupby(['L#', 'media_type']).agg({'mu': ['mean', 'std']}).reset_index()
+    print(table3)
+
+    # Export table to CSV file
+    table3.to_csv('grouped_table', index=False)
+    print(f"Data has been exported into grouped table")
