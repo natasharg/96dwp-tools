@@ -6,14 +6,14 @@ def convert_96dwp_data_to_DF(plate_layout, mu_data, media_type):
     Combines MPHP data with plate layout or media information into a DataFrame. Ensure your files are in excel format. 
     
     Parameters:
-    plate_layout (str): Excel file containing plate layout in 96dwp format.
+    plate_layout (str): Excel file containing plate layout in 96dwp format (eg. strain ID).
     mu_data (str): Excel file containing mu data at different timepoints in 96dwp format.
     media_type (str): Excel file containing media conditions specified per well in 96dwp format.
     
     Example usage: 
-    mu_data = pd.read_excel([path to MPHP data excel file])
-    plate_layout = pd.read_excel([path to plate layout excel file])
-    media_type = pd.read_excel([path to media type excel file])
+    plate_layout = pd.read_excel("path to plate layout excel file")
+    mu_data = pd.read_excel("path to MPHP data excel file")
+    media_type = pd.read_excel("path to media type excel file")
     
     All files should be in the A-H, 1-12 96dwp format that is typically exported from MPHP dashboard
     """
