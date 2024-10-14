@@ -1,0 +1,21 @@
+import os
+
+def rename_files_in_folder(folder_path):
+    for file_name in os.listdir(folder_path):
+        if file_name.endswith('.txt'):
+            file_path = os.path.join(folder_path, file_name)
+            # Extract the base name (without extension) and the extension
+            base_name, extension = os.path.splitext(file_name)
+            # Get the first portion of the base name (up to the first underscore or space)
+            new_base_name = base_name.split('_')[0].split(' ')[0]
+            # Create the new file name
+            new_file_name = f"{new_base_name}{extension}"
+            # Create the full new file path
+            new_file_path = os.path.join(folder_path, new_file_name)
+            # Rename the file
+            os.rename(file_path, new_file_path)
+            print(f"Renamed: {file_name} to {new_file_name}")
+
+# Example usage
+folder_path = 'path_to_file'
+rename_files_in_folder(folder_path)
