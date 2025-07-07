@@ -1,0 +1,23 @@
+import pandas as pd
+
+def delete_rows_with_keywords(file_path, sheet_name, keywords):
+    # Load the Excel file using the openpyxl engine
+    with open(file_path, 'rb') as f:
+        df = pd.read_excel(f, sheet_name=sheet_name, engine='openpyxl')
+
+    # Create a boolean mask for rows that contain any of the keywords
+    mask = df.apply(lambda row: row.astype(str).str.contains('|'.join(keywords), case=False).any(), axis=1)
+
+    # Filter out the rows that contain the keywords
+    df_filtered = df[~mask]
+
+    # Save the filtered DataFrame back to the Excel file
+    with pd.ExcelWriter(file_path, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
+        df_filtered.to_excel(writer, sheet_name=sheet_name, index=False)
+
+# Example usage
+file_path = 'excel file path'
+sheet_name = 'sheet name'
+keywords = ['keywords in rows that need to be filtered out']
+
+delete_rows_with_keywords(file_path, sheet_name, keywords)
